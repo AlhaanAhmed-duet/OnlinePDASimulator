@@ -5,7 +5,7 @@ To develop or contribute with my project you can do the following changes:\
 ```cd OnlinePDASimulator```\
 ```npm install```\
 or simply\
-```yarn add```\
+```yarn add```
 
 # Encoding Rules for Godel Encoding
 The encoding Rules for Godel Encoding must be done according to the data defined in JSON Format. Else your wrong encoding can create problems:

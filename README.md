@@ -28,4 +28,4 @@ encodingRules = {
     }
 ```
 \
-Use 0 as seperator in the string, 00 for transition and 000 for begin and end of the string
+```Use 0 as seperator in the string, 00 for transition and 000 for begin and end of the string```

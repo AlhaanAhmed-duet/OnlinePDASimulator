@@ -57,7 +57,7 @@ function readGodelFile(event: ChangeEvent<HTMLInputElement>): void {
 }
 
 function processGodelData(): void {
-    const godelData: string = "11101110111101101111"
+    const godelData: string = "101110111101101111"
     let encodingRules = {
         states: {
             q0: "1",
@@ -74,7 +74,7 @@ function processGodelData(): void {
             dollarSign: "1111"
         }
     }
-    const splitBySeperator = godelData.split("0", 4)
+    const splitBySeperator = godelData.split("0")
     const detectcurrentState = (): any => {
         const statesEncoding = Object.values(encodingRules.states);
         const checkStateEncoding = statesEncoding.find((str) => {
@@ -90,8 +90,74 @@ function processGodelData(): void {
             console.error("No state match is found, possibly wrong encoding!!")
         }
     }
+    const detectCurrentPrevInputSymbol = function (): any {
+        const detectCurrentInputSymbol: any = Object.entries(encodingRules.inputSymbols).find(([key,value]) => {
+            return value === splitBySeperator[1]
+        })
+        const detectCurrentStackSymbol: any = Object.entries(encodingRules.stackSymbols).find(([key , value]) => {
+            return value === splitBySeperator[1]
+        })
+        if (detectCurrentInputSymbol?.[0] == undefined && detectCurrentStackSymbol?.[0] != undefined) {
+            return detectCurrentStackSymbol?.[0]
+        }
+        else {
+            return detectCurrentInputSymbol?.[0]
+        }
+    }
+    const detectCurrentNextInputSymbol = function(): any {
+        const detectNextInputSymbol: any = Object.entries(encodingRules.inputSymbols).find(([key,value]) => {
+            return value === splitBySeperator[2]
+        })
+        const detectNextStackSymbol: any = Object.entries(encodingRules.stackSymbols).find(([key , value]) => {
+            return value === splitBySeperator[2]
+        })
+        if (detectNextInputSymbol?.[0] == undefined && detectNextStackSymbol?.[0] != undefined) {
+            return detectNextStackSymbol?.[0]
+        }
+        else {
+            return detectNextInputSymbol?.[0]
+        }
+    }
+    const detectNextState = function (): any {
+        const statesEncoding = Object.values(encodingRules.states);
+        const checkNextStateEncoding = statesEncoding.find((str) => {
+            return str === splitBySeperator[3]
+        })
+        if (checkNextStateEncoding) {
+            const detectStatebyEncoding = Object.entries(encodingRules.states).find(([key, value]) => {
+                return value === checkNextStateEncoding
+            })
+            return detectStatebyEncoding?.[0]
+        }
+        else {
+            console.error("No state match is found, possibly wrong encoding!!")
+        }
+    }
+    const detectNextInputSymbol = function (): any {
+        const detectNextInputIfInputSymbol = Object.entries(encodingRules.inputSymbols).find(([key, value]) => {
+            return value === splitBySeperator[4]
+        })
+        const detectNextInputIfStackSymbol = Object.entries(encodingRules.stackSymbols).find(([key, value]) => {
+            return value === splitBySeperator[4]
+        })
+        if (detectNextInputIfInputSymbol?.[0] === undefined && detectNextInputIfStackSymbol?.[0] !== undefined) {
+            return detectNextInputIfStackSymbol?.[0]
+        }
+        else {
+            return detectNextInputIfInputSymbol?.[0]
+        }
+    }
     const currState = detectcurrentState()
-    console.log(currState)
+    const currSymbol = detectCurrentPrevInputSymbol()
+    const nextCurrSymbol = detectCurrentNextInputSymbol()
+    const nextState = detectNextState()
+    const nextInputSymbol = detectNextInputSymbol()
+    
+    console.log("Current State: ",currState)
+    console.log("Current Prev Input Symbol: ",currSymbol)
+    console.log("Current Next Input Symbol: ", nextCurrSymbol)
+    console.log("Next State: ",nextState)
+    console.log("Next Input Symbol: ", nextInputSymbol)
 }
    
 

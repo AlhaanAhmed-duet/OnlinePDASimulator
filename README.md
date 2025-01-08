@@ -7,25 +7,17 @@ To develop or contribute with my project you can do the following changes:\
 or simply\
 ```yarn add```
 
-# Encoding Rules for Godel Encoding
-The encoding Rules for Godel Encoding must be done according to the data defined in JSON Format. Else your wrong encoding can create problems:
-```js
-encodingRules = {
-        states: {
-            q0: "1",
-            q1: "11",
-            q2: "111",
-            q3: "1111"
-        },
-        inputSymbols: {
-            a: "1",
-            b: "11"
-        },
-        stackSymbols: {
-            epsilon: "111",
-            dollarSign: "1111"
-        }
-    }
+# Transitions JSON Format
+The data is defined in JSON Format for Transitions and Configuration of PDA:
+```json
+{
+        "currState": "q0, q1, q2 etc..",
+        "onInputSymbol": "a or b or c",
+        "tos": "a or b or c", // top of the stack variable
+        "nextState": "q0, q1, q2 etc..",
+        "operation": "push, pop or no action",
+        "updatedTos": "a or b or c or epsilon or dollarSign" // updated top of the stack based on push or pop operation
+}
 ```
 \
-```Use 0 as seperator in the string, 00 for transition and 000 for begin and end of the string```
+The project is under development. There is current working only on basic functionality till 8/1/25

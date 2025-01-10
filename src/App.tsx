@@ -1,10 +1,10 @@
 import './App.css'
-import FileInputComponent from './config/PDA';
+import MainApp from "../src/components/mainApp";
 function App() {
   
   return (
     <>
-      <FileInputComponent />
+        <MainApp />
     </>
   )
 }

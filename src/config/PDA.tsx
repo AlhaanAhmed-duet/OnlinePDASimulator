@@ -1,12 +1,11 @@
-import { useState } from "react"
+import { ChangeEvent, MouseEvent, useState } from "react"
 interface TransitionFunction {
     id: number,
     currState: string,
     onInputSymbol: string,
-    tos: string,
     nextState: string,
     operation: "push" | "pop" | "no action",
-    updatedTos: string
+    updateTos: string
 }
 export class PushDownAutomata {
     private states: Array<string>
@@ -43,34 +42,71 @@ export class PushDownAutomata {
 
 }
 
-export default function FileInputComponent() {
+export default function CreatePushDownAutomata() {
     const emptyTransition: TransitionFunction = {
         id: 0,
         currState: "",
         onInputSymbol: "",
-        tos: "",
         nextState: "",
         operation: "no action",
-        updatedTos: ""
+        updateTos: ""
     }
     const [newTransition, setNewTransition] = useState(emptyTransition)
     
-    function createTransitions(): void {
-   
+    function onChangeHandler(event: ChangeEvent<HTMLInputElement>): void {
+        setNewTransition((prev) => {
+            return {...prev, [event.target.name] : event.target.value}
+        })
+    }
+
+    function onChangeOptionHandler(event: ChangeEvent<HTMLInputElement>): void {
+        const triggeredAction = event.target.value;
+        if (triggeredAction === "push") {
+            setNewTransition((prev) => {
+                return {...prev, operation: "push"}
+            })
+        }
+        else if (triggeredAction === "pop") {
+            setNewTransition((prev) => {
+                return {...prev, operation: "pop"}
+            })
+        }
+        else {
+            setNewTransition((prev) => {
+                return {...prev, operation: "no action"}
+            })
+        }
+    }
+    function displayTransition(event: MouseEvent): void {
+        event.preventDefault();
+        let transitionId = 0;
+        setNewTransition((prev) => {
+            return {...prev, id: transitionId++}
+        })
+        console.log(newTransition)
     }
     
     return (
         <>
-            <form>
-                <input type="text" placeholder="Enter current state: " />
-                <input type="text" placeholder="Enter input symbol: " />
+            <form style={{display: "flex", alignItems: "left", justifyContent: "center", flexDirection: "column"}}>
+                <label>Enter current state:  </label>
+                <input type="text" name="currState" onChange={(e) => onChangeHandler(e)} placeholder="Enter current state: " />
+                <label>Enter Input Symbol:  </label>
+                <input type="text" name="onInputSymbol" onChange={(e) => onChangeHandler(e)} placeholder="Enter input symbol: " />
                 <label>Enter operation on your input symbol: </label>
-                <input type="radio" name="operation"></input><label>Push</label>
-                <input type="radio" name="operation"></input><label>Pop</label>
-                <input type="radio" name="operation"></input><label>No action</label>
-                <input type="text" placeholder="Enter next state" />
+                <label>Push</label>
+                <input type="radio" name="operation" value="push" onChange={(e) => onChangeOptionHandler(e)}></input>
+                <label>Pop</label>
+                <input type="radio" name="operation" value="pop" onChange={(e) => onChangeOptionHandler(e)}></input>
+                <label>No action</label>
+                <input type="radio" name="operation" value="no action" onChange={(e) => onChangeOptionHandler(e)}></input>
+                <label>Enter next state to transition: </label>
+                <input type="text" placeholder="Enter next state" name="nextState" onChange={(e) => onChangeHandler(e)}/>
+                <label>Update Top of the stack:  </label>
+                <input type="text" placeholder="Enter next state" name="updateTos" onChange={(e) => onChangeHandler(e)}/>
+                <button onClick={displayTransition}>Generate PDA Machine</button>
             </form>
-            <button>Generate PDA Machine</button>
+            
         </>
     )
 }

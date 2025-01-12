@@ -13,7 +13,6 @@ The data is defined in JSON Format for Transitions and Configuration of PDA:
 {
         "currState": "q0, q1, q2 etc..",
         "onInputSymbol": "a or b or c",
-        "tos": "a or b or c", 
         "nextState": "q0, q1, q2 etc..",
         "operation": "push, pop or no action",
         "updatedTos": "a or b or c or epsilon or dollarSign" 

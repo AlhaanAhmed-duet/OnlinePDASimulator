@@ -20,4 +20,4 @@ The data is defined in JSON Format for Transitions and Configuration of PDA:
 }
 ```
 \
-The project is under development. There is current working only on basic functionality till 8/1/25
+The project is under development. There is current working only on basic functionality. No UI or HTML Content is generated. I am focusing on Javascript functionality first for Program.

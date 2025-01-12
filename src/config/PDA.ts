@@ -1,5 +1,4 @@
-export interface TransitionFunction {
-    id: number,
+export interface Transitions {
     currState: string,
     onInputSymbol: string,
     nextState: string,
@@ -8,37 +7,78 @@ export interface TransitionFunction {
 }
 export class PushDownAutomata {
     private states: Array<string>
-    private stackSymbols: Array<string>
     private initialStates: Array<string>
     private finalState: string
     private inputAlphabets: Array<string>
     private initialStackSymbol: string
-    private transitions: Array<TransitionFunction>
-    private stack: Array<string> = []
+    private transitions: Array<Transitions>
+    public stack: Array<string> = []
 
-    public constructor(states: Array<string>, stackSymbols: Array<string>, initialStates: Array<string>, finalState: string, inputAlphabets: Array<string>, transitions: Array<TransitionFunction>) {
+    public constructor(states: Array<string>, initialStates: Array<string>, finalState: string, inputAlphabets: Array<string>, transitions: Array<Transitions>) {
         this.states = states
-        this.stackSymbols = stackSymbols
         this.initialStates = initialStates
         this.finalState = finalState
         this.inputAlphabets = inputAlphabets
-        this.initialStackSymbol = stackSymbols[0]
+        this.initialStackSymbol = "$"
         this.transitions = transitions
-        this.stack.push("$")
+        this.stack.push(this.initialStackSymbol)
     }
-
-    public push(item: string): void {
+//  Some stack operations defined here for ease
+    private push(item: string): void {
         this.stack.push(item)
     }
-    // Take a look at the top of the stack
-    public peek(): string {
-        let top: number = this.stack.length - 1
-        return this.stack[top]
-    }
-    public pop(): void {
+
+    private pop(): void {
         this.stack.pop()
     }
 
+//  Returns state of the stack
+    public showStackForPushDownAutomataVisualization(): any {
+        return this.stack
+    }
+
+//  Returns nextState progression by a number
+
+    public progressNextState(): number {
+        let progressCounter = 0;
+        for (let i = 0; i < this.transitions.length; i++) {
+            if (this.transitions[i].currState !== this.transitions[i].nextState) {
+                progressCounter++
+            }
+        }
+        return progressCounter
+    }
+
+//  Return true if accepted and if false then reject
+
+    public checkAcceptanceForPDA(inputStr: string): boolean {
+        const input = Array.from(inputStr);
+        let currentState = this.initialStates[0]
+        for (let i = 0; i < input.length; i++) {
+            
+            const currentSymbol = input[i];
+            const currentTransition = this.transitions.find((each) => {
+                return each.currState === currentState && each.onInputSymbol === currentSymbol
+            })
+            if (!currentTransition) {
+                console.log("Not a valid transition")
+                return false
+            }
+
+            if (currentTransition.operation === "push") {
+                this.push(currentTransition.updateTos)
+            } else if (currentTransition.operation === "pop" && currentTransition.updateTos == "epsilon") {
+                if (this.stack.length < 0) {
+                    console.log("Stack Underflow")
+                    return false
+                }
+                this.pop()
+                                
+            }
+            currentState = currentTransition.nextState
+        }
+        return currentState === this.finalState && this.stack.length > 0
+    }
 }
 
 

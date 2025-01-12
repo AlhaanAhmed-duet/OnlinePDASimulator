@@ -1,8 +1,7 @@
 import { ChangeEvent, MouseEvent, useState } from "react"
-import { TransitionFunction, PushDownAutomata } from "../config/PDA"
+import { Transitions, PushDownAutomata } from "../config/PDA"
 export default function CreatePDA() {
-    const emptyTransition: TransitionFunction = {
-        id: 0,
+    const emptyTransition: Transitions = {
         currState: "",
         onInputSymbol: "",
         nextState: "",
@@ -10,7 +9,7 @@ export default function CreatePDA() {
         updateTos: ""
     }
     const [newTransition, setNewTransition] = useState(emptyTransition)
-    const [displayTransitions, setDisplayTransitions] = useState<TransitionFunction[]>([])
+    const [displayTransitions, setDisplayTransitions] = useState<Transitions[]>([])
     
     function onChangeHandler(event: ChangeEvent<HTMLInputElement>): void {
         setNewTransition((prev) => {

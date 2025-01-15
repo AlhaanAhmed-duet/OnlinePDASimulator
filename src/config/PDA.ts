@@ -74,6 +74,7 @@ export class PushDownAutomata {
                     return false
                 }
                 this.pop()
+                showStackForPushDownAutomataVisualization()
                                 
             }
             currentState = currentTransition.nextState

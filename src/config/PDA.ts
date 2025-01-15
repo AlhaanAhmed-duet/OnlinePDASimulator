@@ -33,8 +33,8 @@ export class PushDownAutomata {
     }
 
 //  Returns state of the stack
-    public showStackForPushDownAutomataVisualization(): any {
-        return this.stack
+    public showStackForPushDownAutomataVisualization(): void {
+        console.log(this.stack)
     }
 
 //  Returns nextState progression by a number
@@ -67,6 +67,7 @@ export class PushDownAutomata {
 
             if (currentTransition.operation === "push") {
                 this.push(currentTransition.updateTos)
+                showStackForPushDownAutomataVisualization()
             } else if (currentTransition.operation === "pop" && currentTransition.updateTos == "epsilon") {
                 if (this.stack.length < 0) {
                     console.log("Stack Underflow")
